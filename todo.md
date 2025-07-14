@@ -1,4 +1,6 @@
 - make connectors
-- put text and other info into nodes
-    - input method
- - save and load charts to file
+    - be able to select nodes
+- resize nodes
+    - change cursor on corner hover
+- make text multiline
+- save and load charts to file

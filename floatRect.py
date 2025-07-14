@@ -19,7 +19,7 @@ class FloatRect():
         self.y = pos[1]
     
     def center(self):
-        return pygame.Vector2(self.x+self.height/2, self.y+self.height/2)
+        return pygame.Vector2(self.x+self.width/2, self.y+self.height/2)
     
     def top_left(self):
         return pygame.Vector2(self.x, self.y)

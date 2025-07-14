@@ -24,8 +24,15 @@ class Node(Object):
 
     repel_range = 150
     repel_speed = 3
+
     being_dragged = False
     dragged_offset = (0,0)
+
+    pygame.font.init()
+    default_font = pygame.font.SysFont('Calibri', 30)
+    small_font = pygame.font.SysFont('Calibri', 12)
+    is_writing = False
+    text = "write here"
 
     def __init__(self, pos, width, height):
         pos[0] += random.random() - 0.5
@@ -36,13 +43,19 @@ class Node(Object):
         g=random.randint(20,200)
         b=random.randint(20,200)
         self.color = (r,g,b)
-        #text
+
         #image / type (dust, fluid)
         #color
         
-    def draw(self, surface):
+    def draw(self, surface: pygame.Surface):
         pygame.draw.rect(surface, self.color, self.rect.pygame_rect(), 2)
-        #draw text
+
+        draw_text(self.default_font, surface, self.text, self.rect.center(), self.color) #content text
+        if self.is_writing:
+            draw_text(self.small_font, surface, "writing...", self.rect.top_left() + (0,-12), self.color)
+
+        pygame.draw.circle(surface, "black", self.rect.center(),2)
+
         #draw image
 
 
@@ -65,21 +78,44 @@ class Node(Object):
             click_pos = pygame.Vector2(click_xy)
 
             if button == 1: #left click
-                if(self.rect.pygame_rect().collidepoint(click_pos)):
-                    self.click(click_pos)     
+                if self.rect.pygame_rect().collidepoint(click_pos):
+                    self.drag(click_pos)   
+
+            elif button == 3: #right click
+                if self.rect.pygame_rect().collidepoint(click_pos):
+                    self.write()
+                else:
+                    self.unwrite()
 
         elif event.type == pygame.MOUSEBUTTONUP:
             button = event.button
 
             if button == 1: #left click
-                self.unclick()
+                self.undrag()
+        
+        elif event.type == pygame.KEYDOWN:
+            if self.is_writing:
+                if event.key == pygame.K_RETURN:
+                    self.text += '\n'
+                elif event.key == pygame.K_BACKSPACE:
+                    self.text = self.text[:-1]
+                else:
+                    self.text += event.unicode
 
-    def click(self, click_pos: pygame.Vector2):
+    def drag(self, click_pos: pygame.Vector2):
         self.being_dragged = True
         self.dragged_offset = click_pos - self.rect.top_left()
     
-    def unclick(self):
+    def undrag(self):
         self.being_dragged = False
+
+    def write(self):
+        self.is_writing = True
+        if self.text == "write here":
+            self.text = ""
+
+    def unwrite(self):
+        self.is_writing = False
 
 
     def repel_from_other(self, other):

@@ -27,7 +27,7 @@ while running:
             click_xy = pygame.mouse.get_pos()
             click_pos = pygame.Vector2(click_xy)
 
-            if button == 3: #right click
+            if button == 2: #middle click
                 create_node(click_pos)
         
 
