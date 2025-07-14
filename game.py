@@ -1,6 +1,6 @@
 import pygame
 from node import Node, Object
-import types
+import constants
 
 def create_node(pos: pygame.Vector2):
     width = 100
@@ -11,7 +11,7 @@ def create_node(pos: pygame.Vector2):
     nodes.append(Node(pos, width, height))
 
 pygame.init()
-screen = pygame.display.set_mode((1080,720))
+screen = pygame.display.set_mode((constants.screen_width, constants.screen_height))
 clock = pygame.time.Clock()
 
 nodes: list[Node] = []

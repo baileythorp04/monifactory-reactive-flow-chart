@@ -7,6 +7,9 @@ class FloatRect():
         self.width = size[0]
         self.height = size[1]
     
+    def move(self, vector):
+        return FloatRect((self.x+vector[0], self.y+vector[1]), (self.width, self.height))
+
     def move_ip(self, vector):
         self.x += vector[0]
         self.y += vector[1]
@@ -23,3 +26,9 @@ class FloatRect():
 
     def pygame_rect(self):
         return pygame.Rect(self.x, self.y, self.width, self.height)
+    
+    def x_right(self):
+        return self.x + self.width
+    
+    def y_bottom(self):
+        return self.y + self.height

@@ -1,6 +1,7 @@
 import pygame
 import math
 import random
+import constants
 from floatRect import FloatRect
 from helpers import *
 
@@ -94,5 +95,11 @@ class Node(Object):
 
 
     def move(self, disp):
-        self.rect.move_ip(disp)
-        #move while accounting for edges
+        
+        #prevent moving off screen
+        d_x, d_y = disp
+        d_x = pygame.math.clamp(d_x, self.rect.x*-1, constants.screen_width - self.rect.x_right())
+        d_y = pygame.math.clamp(d_y, self.rect.y*-1, constants.screen_height - self.rect.y_bottom())
+
+        self.rect.move_ip((d_x,d_y))
+
