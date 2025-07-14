@@ -1,5 +1,6 @@
 import pygame
-from node import Node
+from node import Node, Object
+import types
 
 def create_node(pos: pygame.Vector2):
     width = 100
@@ -14,7 +15,7 @@ screen = pygame.display.set_mode((1080,720))
 clock = pygame.time.Clock()
 
 objects = []
-m1_held = False
+dragged_node = Object()
 
 running = True
 while running:
@@ -29,17 +30,23 @@ while running:
 
             if button == 1: #left click
                 for obj in objects:
-                    obj.click(click_pos)
-                    pass
-                pass
-                
+                    if(obj.rect.pygame_rect().collidepoint(click_pos)):
+                        dragged_node = obj
+                        obj.click(click_pos)
+                        break
+
+
             elif button == 3: #right click:
                 
                 create_node(click_pos)
             
 
         elif event.type == pygame.MOUSEBUTTONUP:
-            pass
+            button = event.button
+
+            if button == 1: #left click
+                dragged_node.unclick()
+                dragged_node = Object()
 
     
 
