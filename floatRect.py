@@ -11,8 +11,15 @@ class FloatRect():
         self.x += vector[0]
         self.y += vector[1]
     
+    def move_to(self, pos):
+        self.x = pos[0]
+        self.y = pos[1]
+    
     def center(self):
         return pygame.Vector2(self.x+self.height/2, self.y+self.height/2)
+    
+    def top_left(self):
+        return pygame.Vector2(self.x, self.y)
 
     def pygame_rect(self):
         return pygame.Rect(self.x, self.y, self.width, self.height)

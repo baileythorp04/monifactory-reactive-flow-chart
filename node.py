@@ -1,6 +1,8 @@
 import pygame
 import math
+import random
 from floatRect import FloatRect
+from helpers import *
 
 class Object():
     def draw(self):
@@ -8,6 +10,9 @@ class Object():
 
     def update(self):
         print("update not overridden")
+    
+    def click(self):
+        print("click not overridden")
 
 
 #eventually split Node into Recipe and Item child classes
@@ -15,27 +20,44 @@ class Node(Object):
 
     repel_distance = 150
     repel_speed = 3
+    being_dragged = False
+    dragged_offset = (0,0)
 
     def __init__(self, pos, width, height):
-        #define init variables
         self.rect = FloatRect(pos, (width, height))
+
+        r=random.randint(0,255)
+        g=random.randint(0,255)
+        b=random.randint(0,255)
+        self.color = (r,g,b)
         #text
         #image / type (dust, fluid)
         #color
         
     def draw(self, surface):
-
-        pygame.draw.rect(surface, "black", self.rect.pygame_rect(), 2)
-        #draw box outline
+        pygame.draw.rect(surface, self.color, self.rect.pygame_rect(), 2)
         #draw text
         #draw image
 
 
     def update(self, objects):
-        for obj in objects:
-            if obj is not self:
-                #if obj is a node
-                self.repel_from_other(obj)
+
+        if self.being_dragged:
+            self.rect.move_to(pygame.mouse.get_pos() + (self.dragged_offset*-1))
+
+        else:
+            for obj in objects:
+                if obj is not self:
+                    #if obj is a node
+                    if not obj.being_dragged:
+                        self.repel_from_other(obj)
+    
+
+    def click(self, click_pos: pygame.Vector2):
+        if self.rect.pygame_rect().collidepoint(click_pos):
+            self.being_dragged = True
+            self.dragged_offset = click_pos - self.rect.top_left()
+
 
     def repel_from_other(self, other):
         self_x, self_y = self.rect.center()
