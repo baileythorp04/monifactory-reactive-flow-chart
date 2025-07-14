@@ -6,8 +6,13 @@ from node import Node
 
 
 
-def create_node(pos):
-    objects.append(Node(pos, 50, 20))
+def create_node(pos: pygame.Vector2):
+    width = 100
+    height = 60
+
+    pos.x -= width/2 #create at center
+    pos.y -= height/2
+    objects.append(Node(pos, width, height))
 
 pygame.init()
 screen = pygame.display.set_mode((1080,720))
@@ -20,14 +25,15 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            click_pos = pygame.mouse.get_pos()
+            click_xy = pygame.mouse.get_pos()
+            click_pos = pygame.Vector2(click_xy)
             create_node(click_pos)
             pass
     
 
 
     for obj in objects:
-        obj.update()
+        obj.update(objects)
 
 
     screen.fill((170, 238, 187))    
