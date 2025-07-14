@@ -1,0 +1,4 @@
+- make connectors
+- put text and other info into nodes
+    - input method
+ - save and load charts to file

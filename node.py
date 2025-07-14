@@ -31,9 +31,9 @@ class Node(Object):
         pos[1] += random.random() - 0.5
         self.rect = FloatRect(pos, (width, height))
 
-        r=random.randint(0,255)
-        g=random.randint(0,255)
-        b=random.randint(0,255)
+        r=random.randint(20,200)
+        g=random.randint(20,200)
+        b=random.randint(20,200)
         self.color = (r,g,b)
         #text
         #image / type (dust, fluid)
@@ -57,6 +57,21 @@ class Node(Object):
                     if not obj.being_dragged:
                         self.repel_from_other(obj)
     
+    def handle_event(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            button = event.button
+            click_xy = pygame.mouse.get_pos()
+            click_pos = pygame.Vector2(click_xy)
+
+            if button == 1: #left click
+                if(self.rect.pygame_rect().collidepoint(click_pos)):
+                    self.click(click_pos)     
+
+        elif event.type == pygame.MOUSEBUTTONUP:
+            button = event.button
+
+            if button == 1: #left click
+                self.unclick()
 
     def click(self, click_pos: pygame.Vector2):
         self.being_dragged = True
